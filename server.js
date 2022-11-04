@@ -11,7 +11,10 @@ const router = require('./routers/index');
 const app = express();
 
 // Configuration du server
+// - Fichier static
 app.use(express.static('public'))
+// - Gestion des formulaires (Content-Type : application/x-www-form-urlencoded)
+app.use(express.urlencoded({ extended: true }));
 
 // Config du moteur de vue
 app.set('view engine', 'ejs');
