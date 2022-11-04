@@ -3,20 +3,57 @@
     src: url('/fonts/IndieFlower-Regular.ttf');
 }
 
+/*** Structure ***************************************************/
 body {
     min-height: 100vh;
     box-sizing: border-box;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 240, 242);
+}
+
+header {
+    flex-grow: 0;
+    background-color: hotpink;
+    padding: 5px;
+    color: snow;
 }
 
 main {
-    padding-top: 20px;
     width: 80vw;
     margin: auto;
+
+    flex-grow: 1;
+    background-color: white;
 }
 
+footer {
+    flex-grow: 0;
+    background-color: hotpink;
+    padding: 5px;
+    color: snow;
+}
+
+/*** Nav ***************************************************/
+nav > ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+}
+
+nav > ul > li > a {
+    padding-right: 10px;
+    text-decoration: none;
+    color: snow;
+    font-size: 1.2rem;
+}
+
+/*** Shared ***************************************************/
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Indie Flower';
+    margin: 10px;
 }
 
 h1 {
@@ -27,13 +64,14 @@ h2 {
     color: lightskyblue;
 }
 
-img.welcome {
-    width: 100%;
-}
-
-
+/*** Formulaire ***************************************************/
 label::after {
     content: ':';
     margin-left: 0.5ch;
     margin-right: 0.5ch;
+}
+
+/*** Home Page ***************************************************/
+img.welcome {
+    width: 100%;
 }
