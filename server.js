@@ -5,11 +5,17 @@ const { PORT, NODE_ENV } = process.env;
 // Les imports
 const express = require('express');
 const chalk = require('chalk');
+const router = require('./routers/index');
 
 // Création du server
 const app = express();
 
-// TODO Add Routing
+// Config du moteur de vue
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+// Routing
+app.use(router);
 
 // Demarrage du server
 app.listen(PORT, () => {
