@@ -10,6 +10,9 @@ const router = require('./routers/index');
 // Création du server
 const app = express();
 
+// Configuration du server
+app.use(express.static('public'))
+
 // Config du moteur de vue
 app.set('view engine', 'ejs');
 app.set('views', 'views');
