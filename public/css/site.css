@@ -75,3 +75,9 @@ label::after {
 img.welcome {
     width: 100%;
 }
+
+/*** Add Recipe form *********************************************/
+#input-ingre {
+    display: flex;
+    flex-direction: column;
+}
