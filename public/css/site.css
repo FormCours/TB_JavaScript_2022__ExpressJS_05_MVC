@@ -36,6 +36,15 @@ footer {
 }
 
 /*** Nav ***************************************************/
+nav {
+    display: flex;
+}
+
+nav > ul:first-of-type {
+    flex-grow: 1;
+}
+
+
 nav > ul {
     margin: 0;
     padding: 0;

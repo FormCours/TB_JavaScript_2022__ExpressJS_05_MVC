@@ -1,9 +1,10 @@
 // Chargement des variables d'env
 require('dotenv-flow').config();
-const { PORT, NODE_ENV, URL_MONGODB } = process.env;
+const { PORT, NODE_ENV, URL_MONGODB, SESSION_SECRET } = process.env;
 
 // Les imports
 const express = require('express');
+const session = require('express-session');
 require('express-async-errors');
 
 const chalk = require('chalk');
@@ -29,10 +30,27 @@ const app = express();
 app.use(express.static('public'))
 // - Gestion des formulaires (Content-Type : application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
+// - Session
+app.use(session({
+    resave: true,
+    saveUninitialized : true,
+    secret: SESSION_SECRET,
+    cookie : {
+        httpOnly: true
+    }
+}))
 
 // Config du moteur de vue
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+// Création d'un middelware pour exposer la connection de l'utilisateur
+app.use((req, res, next) => {
+    // Variable "local" qui est disponible dans le moteur de template
+    res.locals.isConnected = (req.session.userId !== undefined);
+    next();
+})
+
 
 // Routing
 app.use(router);

@@ -11,6 +11,10 @@ const homeController = {
      * @param {Response} res La reponse
      */
     index: (req, res) => {
+        // Lecture de la session
+        console.log('UserId (Session) : ', req.session.userId);
+        console.log(res.locals.isConnected);
+
         res.render('home/index');
     },
 

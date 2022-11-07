@@ -14,6 +14,14 @@
                 <li><a href="/">Accueil</a></li>
                 <li><a href="/recipe">Recette</a></li>
             </ul>
+            <ul>
+                <% if(!isConnected) { %>
+                <li><a href="/auth/login">Login</a></li>
+                <li><a href="/auth/register">Register</a></li>
+                <% } else { %>
+                <li><a href="/auth/logout">Logout</a></li>
+                <% } %>
+            </ul>
         </nav>
     </header>
     <main>
