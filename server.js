@@ -1,11 +1,25 @@
 // Chargement des variables d'env
 require('dotenv-flow').config();
-const { PORT, NODE_ENV } = process.env;
+const { PORT, NODE_ENV, URL_MONGODB } = process.env;
 
 // Les imports
 const express = require('express');
+require('express-async-errors');
+
 const chalk = require('chalk');
 const router = require('./routers/index');
+const database = require('./database');
+
+// Connexion à la base de donnée MongoDB
+database(URL_MONGODB)
+    .then((db) => {
+        console.log('Connection MongoDB successfull !');
+    })
+    .catch((e) => {
+        console.log('Connection MongoDB on error !');
+        console.error(e.message);
+        process.exit(1);
+    })
 
 // Création du server
 const app = express();

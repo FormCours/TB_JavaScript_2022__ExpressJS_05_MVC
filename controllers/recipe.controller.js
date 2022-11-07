@@ -1,37 +1,21 @@
-const recipeDB = [
-    {
-        id: 1, 
-        name: 'demo', 
-        desc: 'lorem...', 
-        country: 'France', 
-        ingredients: [
-            '2 tomates',
-            '3 pommes',
-            '40gr sucre'
-        ]
-    }
-];
+const recipeService = require("../services/recipe.service");
+
 
 const recipeController = {
 
-    index: (req, res) => {
-        const recipes = recipeDB.map(r => ({id: r.id, name: r.name}));
-        // const recipes = recipeDB.map(r => {
-        //     return { id: r.id, name: r.name}
-        // });
+    index: async (req, res) => {
+        const recipes = await recipeService.getAll();
 
         res.render('recipe/index', { recipes, count: recipes.length });
     },
 
-    detail: (req, res) => {
+    detail: async (req, res) => {
         const { id } = req.params;
-
-        const recipe = recipeDB.find(r => r.id === parseInt(id));
+        const recipe = await recipeService.getById(id);
 
         if(!recipe) {
             return res.sendStatus(404);
         }
-
         res.render('recipe/detail', { recipe });
     },
 
@@ -40,9 +24,9 @@ const recipeController = {
     },
 
 
-    formPost: (req, res) => {
+    formPost: async (req, res) => {
         const data = req.body;
-        console.log(data);
+        console.log('data body : ', data);
 
         if(!data.name) {
             return res.render('recipe/add', {
@@ -50,9 +34,9 @@ const recipeController = {
             });
         }
         
-        data.id = Math.max(...recipeDB.map(r => r.id)) + 1;
+        const result = await recipeService.add(data);
+        console.log('data DB : ', result);
 
-        recipeDB.push(data);
         res.redirect('/recipe');
     }
 
