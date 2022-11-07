@@ -1,38 +1,61 @@
+const authService = require("../services/auth.service");
 
 
 const authController = {
 
-    login : async (req, res) => {
-        res.render('auth/login');
-    },
-    
-    loginPost : async (req, res) => {
-        const { pseudo, password } = req.body;
-        
-        // TODO Check DB
-        if(pseudo !== 'Zaza' || password !== 'Test1234=') {
-            return res.render('auth/login');
+    login: async (req, res) => {
+        if(req.session.user) {
+            return res.redirect('/');
         }
-        
+
+        res.render('auth/login', { error: undefined });
+    },
+
+    loginPost: async (req, res) => {
+
+        // Check DB
+        const member = await authService.loginAccount(req.body);
+        if (!member) {
+            return res.render('auth/login', { error: 'Login invalide !' });
+        }
+
         // Login in session
-        req.session.userId = 42;
-        req.session.userPseudo = 'Zaza';
-        
+        req.session.user = member;
+
         res.redirect('/');
     },
-    
-    register : async (req, res) => {
-        res.render('auth/register');
-    },
-    
-    registerPost : async (req, res) => {
-        // TODO Add Account in DB
-        // TODO Login session
 
-        res.sendStatus(501);
+    register: async (req, res) => {
+        if(req.session.user) {
+            return res.redirect('/');
+        }
+
+        res.render('auth/register', { error: undefined });
     },
-    
-    logout : async (req, res) => {
+
+    registerPost: async (req, res) => {
+        const {pseudo, email, password, password2} = req.body;
+
+        // Check if Account Available
+        if(await authService.checkAccountExists({pseudo, email})) {
+            return  res.render('auth/register', { error: 'Account already exists!' });
+        }
+
+        // Check password
+        if(password !== password2) {
+            return  res.render('auth/register', { error: 'Not same Password!' });
+        }
+
+        // Add Account in DB
+        const member = await authService.createAccount({pseudo, email, password});
+
+        // Login session
+        req.session.user = member;
+
+        return res.redirect('/');
+    },
+
+    logout: async (req, res) => {
         // Logout in session
         req.session.destroy();
 

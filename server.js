@@ -47,7 +47,9 @@ app.set('views', 'views');
 // Création d'un middelware pour exposer la connection de l'utilisateur
 app.use((req, res, next) => {
     // Variable "local" qui est disponible dans le moteur de template
-    res.locals.isConnected = (req.session.userId !== undefined);
+    res.locals.isConnected = (req.session.user !== undefined);
+    res.locals.pseudo = req.session.user?.pseudo;
+
     next();
 })
 
